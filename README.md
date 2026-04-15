@@ -1,29 +1,122 @@
 # MedExplain - Healthcare Report Analysis Platform
 
-A full-stack healthcare application that allows users to upload medical reports, extract and analyze data, highlight abnormal values, and receive simplified explanations.
+A full-stack healthcare application that allows users to upload medical reports, extract and analyze data, highlight abnormal values, and receive simplified explanations. Features secure authentication, AI-powered analysis, doctor collaboration, and intelligent reporting.
+
+## ✨ Key Features
+
+### 🔐 Authentication & Access Control
+- ✅ JWT-based authentication with secure token management
+- ✅ Google OAuth 2.0 Sign-In integration
+- ✅ Role-based access (Patient & Doctor roles)
+- ✅ Secure password hashing with bcryptjs
+- ✅ Auto-generated Patient IDs (MED-XXXXX format)
+
+### 📧 Communication & Notifications
+- ✅ Automated welcome emails on user registration
+- ✅ Professional HTML email templates
+- ✅ Bulk announcement system (email all users or specific roles)
+- ✅ Gmail integration with nodemailer
+- ✅ Email service with error handling
+
+### 🏥 Patient Features
+- ✅ Upload medical reports (PDF/Images)
+- ✅ AI-powered OCR text extraction
+- ✅ Report analysis & data extraction
+- ✅ Medical timeline view of all records
+- ✅ Secure QR code for report sharing
+- ✅ Doctor patient finder
+- ✅ Multi-language support (EN, HI, TA, ES, FR, DE, PT)
+
+### 👨‍⚕️ Doctor Features
+- ✅ Patient search by Patient ID
+- ✅ Access patient medical history
+- ✅ View detailed patient reports
+- ✅ Annotate and manage patient records
+
+### 💡 User Interface
+- ✅ Professional landing page with feature showcase
+- ✅ Modern gradient design (blue to light blue theme)
+- ✅ Responsive design for all devices
+- ✅ Interactive dashboard
+- ✅ Intuitive navigation
+
+### 🤖 AI & Analysis
+- ✅ Clinical data extraction from reports
+- ✅ Abnormal value detection
+- ✅ Risk level assessment
+- ✅ AI chatbot for medical questions
+- ✅ Smart follow-up recommendations
 
 ## 🏗️ Project Structure
 
 ```
-medExp/
-├── backend/          # Node.js + Express API
-│   ├── models/       # MongoDB schemas
-│   ├── routes/       # API endpoints
-│   ├── controllers/  # Business logic
-│   ├── middleware/   # Auth & validation
-│   ├── uploads/      # Uploaded files
-│   ├── server.js     # Main server file
+MedExplain/
+├── backend/
+│   ├── controllers/
+│   │   ├── authController.js      # Auth & OAuth logic
+│   │   ├── chatbotController.js
+│   │   ├── doctorController.js
+│   │   ├── reportController.js
+│   │   ├── timelineController.js
+│   │   └── qrController.js
+│   ├── models/
+│   │   ├── User.js               # User schema (with OAuth support)
+│   │   ├── Report.js
+│   │   ├── ChatHistory.js
+│   │   └── Timeline.js
+│   ├── routes/
+│   │   ├── auth.js               # Auth & Google OAuth routes
+│   │   ├── reports.js
+│   │   ├── chatbot.js
+│   │   ├── doctor.js
+│   │   ├── timeline.js
+│   │   └── qr.js
+│   ├── middleware/
+│   │   └── auth.js               # JWT verification
+│   ├── services/
+│   │   ├── emailService.js       # Welcome emails & bulk announcements
+│   │   ├── chatbotService.js
+│   │   └── structuredExtractor.js
+│   ├── .env                       # Configuration
+│   ├── server.js
 │   └── package.json
-├── frontend/         # React application
+│
+├── frontend/
 │   ├── src/
-│   │   ├── components/  # Reusable React components
-│   │   ├── pages/       # Page components
-│   │   ├── services/    # API services
-│   │   ├── context/     # React Context
+│   │   ├── components/
+│   │   │   ├── GoogleSignIn.js   # Google OAuth component
+│   │   │   ├── Header.js
+│   │   │   ├── Navigation.js
+│   │   │   ├── FileUpload.js
+│   │   │   ├── Chatbot.js
+│   │   │   ├── PrivateRoute.js
+│   │   │   └── ReportViewer.js
+│   │   ├── pages/
+│   │   │   ├── Landing.js        # Professional landing page
+│   │   │   ├── Login.js
+│   │   │   ├── Register.js
+│   │   │   ├── Dashboard.js
+│   │   │   ├── Timeline.js       # Medical timeline
+│   │   │   ├── DoctorDashboard.js
+│   │   │   ├── DoctorPatientView.js
+│   │   │   ├── ReportDetail.js
+│   │   │   ├── QRShare.js
+│   │   │   └── UploadReport.js
+│   │   ├── context/
+│   │   │   └── AuthContext.js    # Global auth with Google support
+│   │   ├── services/
+│   │   │   └── api.js            # Axios API client
+│   │   ├── locales/              # Multi-language files
+│   │   ├── i18n.js               # i18n configuration
 │   │   ├── App.js
+│   │   ├── App.css               # Global styling with gradients
 │   │   └── index.js
-│   └── package.json
-└── README.md
+│   ├── public/index.html
+│   ├── package.json
+│   └── craco.config.js
+│
+├── README.md
+└── .gitignore
 ```
 
 ## 🛠️ Tech Stack
@@ -31,18 +124,24 @@ medExp/
 ### Backend
 - **Node.js** - JavaScript runtime
 - **Express.js** - Web framework
-- **MongoDB** - NoSQL database
-- **JWT** - Authentication
-- **Multer** - File uploads
-- **Tesseract.js** - OCR (offline)
-- **PDF-Parse** - PDF parsing
+- **MongoDB** - NoSQL database with Mongoose ODM
+- **JWT (jsonwebtoken)** - Secure authentication tokens
+- **Passport.js** - OAuth 2.0 authentication
+- **Nodemailer** - Email delivery service
+- **Bcryptjs** - Password hashing
+- **Multer** - File upload handling
+- **CORS** - Cross-origin resource sharing
+- **Dotenv** - Environment variable management
 
 ### Frontend
-- **React.js** - UI library
-- **React Router** - Navigation
-- **Bootstrap 5** - UI styling
-- **Recharts** - Charts and graphs
+- **React.js** - UI library (v18)
+- **React Router** - Client-side routing (v6)
+- **Bootstrap 5** - Responsive CSS framework
 - **Axios** - HTTP client
+- **@react-oauth/google** - Google Sign-In integration
+- **jwt-decode** - JWT token decoding
+- **i18next** - Multi-language support
+- **Recharts** - Data visualization
 
 ## 📋 Prerequisites
 
@@ -103,60 +202,97 @@ npm start
 
 **Frontend will run on:** http://localhost:3000
 
-## 📝 Features
+## � User Journey
 
-### ✅ Currently Implemented
-- User Authentication (Register/Login with JWT)
-- Medical report upload (PDF/Images)
-- Report history storage
-- Basic chatbot with rule-based responses
-- Data model for analysis results
-- Multi-language support (structure ready)
-- File storage management
+### Patient Flow
+1. **Landing Page** - Explore features and benefits
+2. **Registration** - Create account (with welcome email)
+3. **Dashboard** - Upload medical reports
+4. **Report Analysis** - View extracted data and insights
+5. **Timeline** - See complete medical history
+6. **Doctor Sharing** - Share reports via QR code
+7. **Chatbot** - Ask medical questions
 
-### 🔄 Ready to Implement
-- OCR text extraction (Tesseract.js)
-- Data analysis engine (compare against reference ranges)
-- Advanced explanation generator
-- Report visualization with charts
-- Advanced chatbot with NLP
-- Multilingual interface
+### Doctor Flow
+1. **Doctor Login** - Access as healthcare provider
+2. **Patient Search** - Find patients by Patient ID
+3. **Patient Records** - View complete medical history
+4. **Manage** - Review and annotate patient reports
 
 ## 🔌 API Endpoints
 
 ### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - User login
-- `GET /api/auth/me` - Get current user
-- `PUT /api/auth/language` - Update language preference
+- `POST /api/auth/register` - Register new user with email verification
+- `POST /api/auth/login` - User login with JWT token
+- `POST /api/auth/google` - Google OAuth authentication
+- `GET /api/auth/me` - Get current authenticated user
+- `PUT /api/auth/language` - Update user language preference
+- `POST /api/auth/send-announcement` - Send bulk email announcement (protected)
 
 ### Reports
 - `POST /api/reports/upload` - Upload medical report
 - `GET /api/reports` - Get all user reports
-- `GET /api/reports/:id` - Get specific report
+- `GET /api/reports/:id` - Get specific report details
 - `DELETE /api/reports/:id` - Delete report
 
+### Timeline
+- `GET /api/timeline` - Get user's medical timeline
+
+### Doctor Features
+- `GET /api/doctor/patient/:patientId` - Get patient information
+- `GET /api/qr/:patientId` - Generate QR code for patient
+
 ### Chatbot
-- `POST /api/chatbot/message` - Send message to chatbot
+- `POST /api/chatbot/message` - Send message to AI chatbot
 - `GET /api/chatbot/history/:reportId` - Get chat history
 
-### History
-- `GET /api/history` - Get user's report history
+### Utilities
+- `GET /api/health` - Health check endpoint
 
 ## 🔐 Environment Variables
 
 ### Backend (.env)
 ```
+# Server Configuration
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/medexplain
-JWT_SECRET=your_jwt_secret_key_change_this_in_production
 NODE_ENV=development
+
+# Database
+MONGODB_URI=mongodb://localhost:27017/medexplain
+
+# Authentication
+JWT_SECRET=your_jwt_secret_key_change_this_in_production
+
+# Email Service (Gmail)
+EMAIL_USER=your_gmail@gmail.com
+EMAIL_PASS=your_gmail_app_password
+
+# Google OAuth 2.0
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
 ```
 
 ### Frontend (.env optional)
 ```
 REACT_APP_API_URL=http://localhost:5000/api
 ```
+
+## 🔧 Setup Instructions for Email & OAuth
+
+### Gmail Setup (for welcome emails & announcements)
+1. Go to [Gmail Security Settings](https://myaccount.google.com/apppasswords)
+2. Select "Mail" and "Windows Computer"
+3. Generate app password (16 characters)
+4. Copy to `.env` as `EMAIL_PASS`
+
+### Google OAuth Setup (for Sign-In)
+1. Go to [Google Cloud Console](https://console.cloud.google.com)
+2. Create new project "MedExplain"
+3. Enable Google+ API
+4. Create OAuth 2.0 credentials (Web application)
+5. Add authorized origins: `http://localhost:3000`
+6. Copy Client ID and Secret to `.env`
 
 ## 📊 Database Schema
 
@@ -209,45 +345,142 @@ REACT_APP_API_URL=http://localhost:5000/api
 }
 ```
 
-## 🧪 Testing the Application
+## 🧪 Testing the Features
 
-### 1. Register a new account
-- Visit http://localhost:3000/register
-- Fill in name, email, and password
-- Click Register
+### 1. Landing Page
+```
+Visit: http://localhost:3000
+- View features and benefits
+- Click "Get Started" to register or "Sign In" to login
+```
 
-### 2. Upload a report
+### 2. User Registration (Traditional)
+```
+- Go to: http://localhost:3000/register
+- Enter: Full Name, Email, Password, Role (Patient/Doctor)
+- Should receive welcome email automatically
+```
+
+### 3. Google Sign-In
+```
+- Click "Sign in with Google" button
+- Select your Google account
+- Should be logged in and redirected to dashboard
+```
+
+### 4. Upload Medical Report
+```
 - Go to Dashboard
-- Upload a medical report (PDF or image)
-- Report will appear in history
-
-### 3. View report
-- Click on report in history
-- View analysis results
-- Interact with chatbot
-
-## 🔧 Troubleshooting
-
-### MongoDB Connection Error
-```
-❌ Error: connect ECONNREFUSED 127.0.0.1:27017
-```
-**Solution:** Make sure MongoDB is running
-```powershell
-mongod
-# or
-net start MongoDB
+- Click "Upload Report"
+- Select PDF or image file
+- Report appears in timeline
 ```
 
-### Port Already in Use
+### 5. View Timeline
 ```
-❌ Error: listen EADDRINUSE: address already in use :::5000
+- Navigate to "Timeline"
+- See chronological list of all reports
+- Click report to view details
 ```
-**Solution:** Change PORT in .env or kill process using the port
 
-### Frontend API Errors
-- Check if backend is running (http://localhost:5000/api/health)
-- Clear browser cache and local storage
+### 6. Doctor Features
+```
+- Login as Doctor role
+- Go to Doctor Dashboard
+- Enter Patient ID (format: MED-XXXXX)
+- View patient's complete medical history
+```
+
+### 7. Send Bulk Announcement (Admin)
+```
+- Use POST /api/auth/send-announcement endpoint
+- Provide subject and message
+- All users receive email announcement
+```
+
+## � Deployment Options
+
+### Backend Deployment (Render/Railway/Heroku)
+```
+1. Push code to GitHub
+2. Connect repository to deployment platform
+3. Set environment variables in platform dashboard
+4. Deploy with: npm start
+```
+
+### Frontend Deployment (Netlify/Vercel)
+```
+1. Connect GitHub repository
+2. Build command: npm run build
+3. Publish directory: build/
+4. Set REACT_APP_API_URL to production backend
+5. Deploy automatically on push
+```
+
+### Database Deployment
+```
+- Use MongoDB Atlas for cloud hosting
+- Update MONGODB_URI in production .env
+- Ensure IP whitelist includes server IPs
+```
+
+## 📚 Documentation
+
+- **API Documentation:** See routes for detailed endpoint info
+- **User Guide:** Visit landing page for feature overview
+- **Developer Guide:** Check comments in controller files
+- **Architecture:** See Project Structure section above
+
+## 🐛 Known Issues & Limitations
+
+- Google Sign-In requires `http://localhost:3000` in authorized origins
+- Email service requires Gmail app password (2FA enabled)
+- File upload limited to uploaded folder size
+- OAuth password-less users cannot export data with password
+
+## 💡 Future Enhancements
+
+- [ ] Advanced AI analysis with machine learning
+- [ ] Prescription management
+- [ ] Appointment scheduling
+- [ ] Video consultation integration
+- [ ] Telemedicine features
+- [ ] Mobile app (React Native)
+- [ ] Dark mode
+- [ ] Advanced analytics dashboard
+- [ ] Insurance integration
+- [ ] FHIR standards compliance
+
+## 📞 Support & Contributing
+
+For issues, feature requests, or contributions:
+1. Open an issue on GitHub
+2. Submit pull requests with improvements
+3. Follow the existing code structure
+4. Add tests for new features
+
+## 📄 License
+
+This project is licensed under the MIT License
+
+## 👥 Author
+
+**Anjali Jayawardhan**
+- Email: atchayamathiyalagan@gmail.com
+- GitHub: [Atchaya-M-26](https://github.com/Atchaya-M-26)
+
+## 🎉 Acknowledgments
+
+- React.js community for excellent documentation
+- Express.js for robust server framework
+- MongoDB for flexible database
+- Google Cloud for OAuth services
+- Bootstrap community for CSS framework
+
+---
+
+**Last Updated:** April 15, 2026
+**Version:** 1.0.0 (Production Ready)
 - Check browser console for detailed errors
 
 ## 📚 Next Steps
