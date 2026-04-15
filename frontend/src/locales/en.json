@@ -1,0 +1,128 @@
+{
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "tamil": "Tamil",
+    "hindi": "Hindi",
+    "logout": "Logout",
+    "welcome": "Welcome",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "dashboard": {
+    "title": "Upload Medical Report",
+    "selectReport": "Select Medical Report",
+    "chooseFile": "Choose File",
+    "noFileChosen": "No file chosen",
+    "supports": "Supports PDF, JPG, PNG, TIFF files",
+    "upload": "Upload",
+    "description": "Our AI will automatically read your report and summarize it in simple language.",
+    "reportHistory": "Report History",
+    "delete": "Delete",
+    "failed": "Failed",
+    "noReports": "No reports uploaded yet",
+    "uploadFile": "Upload a file to get started"
+  },
+  "reportViewer": {
+    "processing": "Processing your medical report... Please wait.",
+    "failed": "Error processing report:",
+    "whatYourReportSays": "📋 What Your Report Says (In Simple Terms)",
+    "importantFindings": "⚠️ Important Findings",
+    "testResultsExplained": "📊 Your Test Results Explained",
+    "yourValue": "Your value:",
+    "normalStatus": "✓ Normal",
+    "abnormalStatus": "⚠️ Needs Attention",
+    "fullReportText": "Full Report Text"
+  },
+  "chatbot": {
+    "title": "Medical Assistant",
+    "placeholder": "Ask about your results...",
+    "send": "Send",
+    "chat": "Chat with our AI assistant for more information about your report"
+  },
+  "analysis": {
+    "bloodPressure": "Blood Pressure",
+    "bloodGlucose": "Blood Glucose (Sugar Level)",
+    "hemoglobin": "Hemoglobin (Oxygen Carrier)",
+    "totalCholesterol": "Total Cholesterol",
+    "triglycerides": "Triglycerides (Blood Fat)",
+    "goodCholesterol": "Good Cholesterol (HDL)",
+    "badCholesterol": "Bad Cholesterol (LDL)",
+    "mmHg": "mmHg",
+    "mgDl": "mg/dL",
+    "gDl": "g/dL",
+    "percent": "%",
+    "normal": "Normal",
+    "slightlyHigh": "Slightly high",
+    "borderlineHigh": "Borderline high",
+    "high": "High",
+    "elevated": "Elevated",
+    "low": "Low",
+    "anemia": "Anemia risk",
+    "desirable": "Desirable",
+    "optimal": "Optimal",
+    "nearOptimal": "Near optimal"
+  },
+  "explanations": {
+    "bloodPressure": "The pressure of blood against your artery walls. Normal is less than 120/80 mmHg.",
+    "lowBloodSugar": "Low blood sugar - eat something to raise it",
+    "normalBloodSugar": "Normal fasting level - good control",
+    "slightlyElevatedBloodSugar": "Slightly elevated - monitor your diet",
+    "diabeticRangeBloodSugar": "Diabetic range - consult your doctor",
+    "lowHemoglobin": "Low (Anemia risk) - may cause fatigue",
+    "normalHemoglobin": "Normal - good oxygen carrying capacity",
+    "highHemoglobin": "High - may indicate dehydration",
+    "desirableCholesterol": "Desirable - keep up your healthy habits",
+    "borderlineHighCholesterol": "Borderline high - consider lifestyle changes",
+    "highCholesterol": "High - consult your doctor about treatment",
+    "normalTriglycerides": "Normal - good fat levels",
+    "elevatedTriglycerides": "Elevated - reduce sugar and fat intake",
+    "healthyHdl": "Healthy level - good protective cholesterol",
+    "lowHdl": "Low - increase exercise",
+    "optimalLdl": "Optimal - excellent heart health",
+    "optimalNeighborhoodLdl": "Near optimal - maintain current habits",
+    "highLdl": "High - consult doctor about treatment"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Full Name",
+    "login": "Login",
+    "register": "Register",
+    "noAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginHere": "Login here",
+    "registerHere": "Register here"
+  },
+  "nav": {
+    "history": "History",
+    "share": "Share",
+    "patientSearch": "Patient Search"
+  },
+  "timeline": {
+    "title": "History",
+    "empty": "No history yet. Upload your first report to start building your timeline.",
+    "viewReport": "View Report"
+  },
+  "reportDetail": {
+    "summary": "Summary",
+    "details": "Details",
+    "notes": "Notes",
+    "condition": "Condition / Diagnosis",
+    "medications": "Medications",
+    "dosage": "Dosages",
+    "testResults": "Test Results",
+    "insights": "Insights"
+  },
+  "qr": {
+    "title": "Share with your doctor",
+    "subtitle": "Your doctor can scan this to view your medical history",
+    "copyLink": "Copy link",
+    "copied": "Copied!"
+  },
+  "doctor": {
+    "searchTitle": "Patient Search",
+    "searchSubtitle": "Enter a patient ID to view their medical history"
+  }
+}

@@ -1,0 +1,26 @@
+.language-selector {
+  margin-right: 15px;
+}
+
+.language-selector .dropdown-toggle {
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 0.875rem;
+}
+
+.language-selector .dropdown-menu {
+  min-width: fit-content;
+}
+
+.language-selector .dropdown-item {
+  padding: 8px 16px;
+}
+
+.language-selector .dropdown-item.active {
+  background-color: #007bff;
+  color: white;
+}
+
+.language-selector .dropdown-item:hover {
+  background-color: #f8f9fa;
+}
