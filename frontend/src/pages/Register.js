@@ -38,7 +38,6 @@ const Register = () => {
     <div style={{ minHeight: '100vh', background: 'var(--color-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem' }}>
       <div style={{ width: '100%', maxWidth: '420px' }}>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🏥</div>
           <h1 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 700, color: 'var(--color-text)' }}>MedExplain</h1>
           <p style={{ margin: '0.25rem 0 0', color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>Clinical Record System</p>
         </div>
@@ -87,7 +86,7 @@ const Register = () => {
                     transition: 'all 0.15s',
                   }}>
                     <input type="radio" name="role" value={role} checked={formData.role === role} onChange={handleChange} style={{ display: 'none' }} />
-                    {role === 'patient' ? '🧑‍⚕️' : '👨‍⚕️'} {role.charAt(0).toUpperCase() + role.slice(1)}
+                    {role.charAt(0).toUpperCase() + role.slice(1)}
                   </label>
                 ))}
               </div>

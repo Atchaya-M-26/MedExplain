@@ -39,7 +39,6 @@ const Login = () => {
       <div style={{ width: '100%', maxWidth: '420px' }}>
         {/* Brand */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>🏥</div>
           <h1 style={{ margin: 0, fontSize: '1.6rem', fontWeight: 700, color: 'var(--color-text)' }}>MedExplain</h1>
           <p style={{ margin: '0.25rem 0 0', color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>Clinical Record System</p>
         </div>

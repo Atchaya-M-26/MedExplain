@@ -7,7 +7,7 @@ const Header = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleLogout = () => { logout(); navigate('/login'); };
+  const handleLogout = () => { logout(); navigate('/'); };
 
   const navLink = ({ isActive }) => ({
     color: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
