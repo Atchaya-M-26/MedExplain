@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Card, Badge, Row, Col, Alert, Spinner } from 'react-bootstrap';
-import axios from 'axios';
+import { imageAnalysisService } from '../services/api';
 
 const History = () => {
   const [scanHistory, setScanHistory] = useState([]);
@@ -20,12 +20,7 @@ const History = () => {
   const loadScanHistory = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/image-analysis/history', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await imageAnalysisService.getHistory();
       setScanHistory(response.data.analyses || []);
       setError('');
     } catch (err) {

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Container, Card, Form, Button, Alert, Badge } from 'react-bootstrap';
-import axios from 'axios';
+import { imageAnalysisService } from '../services/api';
 
 const MedicalImageAnalysis = () => {
-  const [authToken, setAuthToken] = useState(localStorage.getItem('token'));
   const [selectedFile, setSelectedFile] = useState(null);
   const [scanType, setScanType] = useState('chest-xray');
   const [preview, setPreview] = useState(null);
@@ -52,19 +51,7 @@ const MedicalImageAnalysis = () => {
     setError(null);
 
     try {
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-
-      const response = await axios.post(
-        `http://localhost:5000${imageTypes[scanType].endpoint}`,
-        formData,
-        {
-          headers: {
-            'Authorization': `Bearer ${authToken}`
-          },
-          timeout: 120000
-        }
-      );
+      const response = await imageAnalysisService.uploadAnalysis(selectedFile, scanType);
 
       setResult(response.data.analysis);
       setSelectedFile(null);

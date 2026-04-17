@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { Modal, Button } from 'react-bootstrap';
-import { timelineService } from '../services/api';
+import { timelineService, imageAnalysisService } from '../services/api';
 
 const fmt = d => d ? new Date(d).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '—';
 const fmtMonth = d => d ? new Date(d).toLocaleDateString(undefined, { month: 'short' }) : '';
@@ -39,10 +38,7 @@ const Timeline = () => {
       const reportEntries = reportResponse.data.data || reportResponse.data || [];
 
       // Load scan analysis history
-      const token = localStorage.getItem('token');
-      const scanResponse = await axios.get('http://localhost:5000/api/image-analysis/history', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
+      const scanResponse = await imageAnalysisService.getHistory();
       const scanEntries = (scanResponse.data.analyses || []).map(scan => ({
         ...scan,
         type: 'scan',
@@ -80,10 +76,7 @@ const Timeline = () => {
 
     try {
       if (deleteItem.type === 'scan') {
-        const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:5000/api/image-analysis/${deleteItem.id}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        await imageAnalysisService.deleteAnalysis(deleteItem.id);
       } else {
         // For reports, just store in localStorage
         const deleted = [...deletedReports, deleteItem.id];

@@ -78,6 +78,21 @@ export const doctorService = {
   getPatient: (patientId) => api.get(`/doctor/patient/${patientId}`)
 };
 
+// Image Analysis Service
+export const imageAnalysisService = {
+  uploadAnalysis: (file, imageType) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post(`/image-analysis/analyze/${imageType}`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 120000
+    });
+  },
+  getHistory: () => api.get('/image-analysis/history', { timeout: 120000 }),
+  getAnalysis: (id) => api.get(`/image-analysis/${id}`, { timeout: 120000 }),
+  deleteAnalysis: (id) => api.delete(`/image-analysis/${id}`)
+};
+
 // QR Service
 export const qrService = {
   getQR: (patientId) => api.get(`/qr/${patientId}`)

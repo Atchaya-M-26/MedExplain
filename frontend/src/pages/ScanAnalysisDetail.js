@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Card, Badge, Row, Col, Alert, Spinner, Button } from 'react-bootstrap';
-import axios from 'axios';
+import { imageAnalysisService } from '../services/api';
 
 const ScanAnalysisDetail = () => {
   const { id } = useParams();
@@ -24,11 +24,7 @@ const ScanAnalysisDetail = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get(`http://localhost:5000/api/image-analysis/${id}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+      const response = await imageAnalysisService.getAnalysis(id);
       setAnalysis(response.data.analysis);
       setError('');
     } catch (err) {
