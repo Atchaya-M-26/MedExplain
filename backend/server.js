@@ -10,7 +10,20 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+// CORS configuration for development and production
+const corsOptions = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3002',
+    'https://med-explain-ten.vercel.app',
+    'https://modexplain-3wzb.onrender.com'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
