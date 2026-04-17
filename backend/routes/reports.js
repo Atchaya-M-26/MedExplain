@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const { uploadReport, getReports, getReport, deleteReport } = require('../controllers/reportController');
+const { uploadReport, getReports, getReport, deleteReport, getDeletedReports, restoreReport, permanentlyDeleteReport } = require('../controllers/reportController');
 const { protect } = require('../middleware/auth');
 
 const router = express.Router();
@@ -32,6 +32,9 @@ const upload = multer({
 });
 
 router.post('/upload', protect, upload.single('file'), uploadReport);
+router.get('/deleted/history', protect, getDeletedReports);
+router.patch('/:id/restore', protect, restoreReport);
+router.delete('/:id/permanent', protect, permanentlyDeleteReport);
 router.get('/', protect, getReports);
 router.get('/:id', protect, getReport);
 router.delete('/:id', protect, deleteReport);

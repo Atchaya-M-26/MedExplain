@@ -87,7 +87,7 @@ ul li{font-size:.82rem;color:#4a5568;margin-bottom:4px}
   }
 }
 
-module.exports = { sendReportNotification, sendWelcomeEmail, sendBulkAnnouncement };
+module.exports = { sendReportNotification, sendWelcomeEmail, sendBulkAnnouncement, sendPasswordResetEmail };
 
 async function sendWelcomeEmail(toEmail, userName) {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
@@ -151,6 +151,63 @@ ul li{font-size:.82rem;color:#4a5568;margin-bottom:8px}
     console.log(`✅ Welcome email sent to ${toEmail} (${info.messageId})`);
   } catch (err) {
     console.error(`❌ Welcome email failed for ${toEmail}:`, err.message);
+  }
+}
+
+async function sendPasswordResetEmail(toEmail, resetLink) {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('Email not configured — skipping password reset email');
+    return;
+  }
+  if (!toEmail) return;
+
+  const html = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><style>
+body{font-family:Arial,sans-serif;background:#f8f9fa;margin:0;padding:0}
+.wrap{max-width:580px;margin:24px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.hdr{background:linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);padding:24px 28px}
+.hdr h1{color:#fff;margin:0;font-size:1.2rem;font-weight:700}
+.bdy{padding:24px 28px}
+.cta{display:inline-block;background:#e74c3c;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;font-size:.9rem}
+.warning{background:#fff3cd;border-left:4px solid #ffc107;border-radius:0 8px 8px 0;padding:12px 16px;margin:20px 0}
+.divider{border:none;border-top:1px solid #e9ecef;margin:18px 0}
+.ftr{background:#f8f9fa;padding:14px 28px;font-size:.72rem;color:#a0aec0;border-top:1px solid #e9ecef}
+</style></head>
+<body>
+<div class="wrap">
+  <div class="hdr"><h1>Reset Your Password</h1></div>
+  <div class="bdy">
+    <p style="font-size:.95rem;color:#2d3748;margin:0 0 16px">Hi,</p>
+    <p style="font-size:.875rem;color:#718096;margin:0 0 20px">You requested to reset your password on MedExplain. Click the button below to create a new password:</p>
+    
+    <div style="text-align:center;margin:28px 0">
+      <a href="${resetLink}" class="cta">Reset Password</a>
+    </div>
+    
+    <p style="font-size:.82rem;color:#718096;margin:0 0 12px">Or copy and paste this link in your browser:</p>
+    <p style="font-size:.75rem;color:#718096;word-break:break-all;margin:0 0 20px;background:#f5f5f5;padding:10px;border-radius:4px">${resetLink}</p>
+    
+    <div class="warning">
+      <strong>⏰ Important:</strong> This link will expire in 1 hour for security reasons.
+    </div>
+    
+    <hr class="divider">
+    <p style="font-size:.82rem;color:#718096;margin:0">If you didn't request this password reset, please ignore this email. Your account remains secure.</p>
+  </div>
+  <div class="ftr">MedExplain Password Reset Email</div>
+</div>
+</body></html>`;
+
+  try {
+    const info = await getTransporter().sendMail({
+      from: `MedExplain <${process.env.EMAIL_USER}>`,
+      to: toEmail,
+      subject: 'Reset Your MedExplain Password',
+      html,
+    });
+    console.log(`✅ Password reset email sent to ${toEmail} (${info.messageId})`);
+  } catch (err) {
+    console.error(`❌ Password reset email failed for ${toEmail}:`, err.message);
   }
 }
 

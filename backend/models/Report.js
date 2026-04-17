@@ -53,7 +53,12 @@ const reportSchema = new mongoose.Schema({
     enum: ['pending', 'processing', 'completed', 'failed'],
     default: 'pending'
   },
-  analysisError: String
+  analysisError: String,
+  isDeleted: {
+    type: Boolean,
+    default: false
+  },
+  deletedAt: Date
 });
 
 // Index for duplicate detection by user + original filename

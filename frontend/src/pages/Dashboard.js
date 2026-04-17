@@ -63,11 +63,6 @@ const Dashboard = () => {
   }, [reports]);
 
   const handleUpload = r => { setReports(p => [r, ...p]); setShowUpload(false); setTimeout(fetchReports, 1000); };
-  const handleDelete = async (e, id) => {
-    e.stopPropagation();
-    try { await reportService.deleteReport(id); setReports(p => p.filter(r => r._id !== id)); }
-    catch { setError('Failed to delete.'); }
-  };
 
   const completed = reports.filter(r => r.status === 'completed').length;
   const pending = reports.filter(r => r.status === 'pending' || r.status === 'processing').length;
@@ -204,12 +199,6 @@ const Dashboard = () => {
                     <button className="btn-primary" style={{ flex: 1, fontSize: '0.82rem', padding: '0.45rem 0.75rem' }}
                       onClick={() => navigate(`/report/${report._id}`)}>
                       View Details →
-                    </button>
-                    <button onClick={e => handleDelete(e, report._id)} title="Delete"
-                      style={{ background: 'none', border: '1.5px solid var(--color-border)', borderRadius: 6, cursor: 'pointer', padding: '0.45rem 0.6rem', fontSize: '0.85rem', color: 'var(--color-text-muted)', transition: 'all 0.15s' }}
-                      onMouseEnter={e => { e.currentTarget.style.borderColor = '#fca5a5'; e.currentTarget.style.color = '#ef4444'; e.currentTarget.style.background = '#fff5f5'; }}
-                      onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--color-border)'; e.currentTarget.style.color = 'var(--color-text-muted)'; e.currentTarget.style.background = 'none'; }}>
-                      🗑
                     </button>
                   </div>
                 </div>

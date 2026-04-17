@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
-const { sendWelcomeEmail, sendBulkAnnouncement } = require('../services/emailService');
+const { sendWelcomeEmail, sendBulkAnnouncement, sendPasswordResetEmail } = require('../services/emailService');
 
 // Generate JWT Token
 const generateToken = (id, role) => {
@@ -27,8 +27,13 @@ exports.register = async (req, res) => {
     // Create token
     const token = generateToken(user._id, user.role);
 
-    // Send welcome email
-    await sendWelcomeEmail(user.email, user.name);
+    // Send welcome email (don't fail if email service has issues)
+    try {
+      await sendWelcomeEmail(user.email, user.name);
+    } catch (emailError) {
+      console.error('Email service error:', emailError.message);
+      // Continue anyway - registration should succeed even if email fails
+    }
 
     res.status(201).json({
       success: true,
@@ -163,7 +168,7 @@ exports.updateLanguage = async (req, res) => {
 // @access  Public
 exports.googleAuth = async (req, res) => {
   try {
-    const { googleId, email, name, picture } = req.body;
+    const { googleId, email, name, picture, role = 'patient' } = req.body;
 
     if (!googleId || !email) {
       return res.status(400).json({ error: 'Missing required fields' });
@@ -179,17 +184,20 @@ exports.googleAuth = async (req, res) => {
         email,
         googleId,
         picture,
-        role: 'patient',
+        role: role || 'patient',
         password: undefined // No password for OAuth users
       });
-      console.log(`✅ New user created via Google OAuth: ${email}`);
-      // Send welcome email for new users
-      await sendWelcomeEmail(user.email, user.name);
+      console.log(`✅ New user created via Google OAuth: ${email} (Role: ${role})`);
+      
+      // Send welcome email asynchronously (don't wait for it)
+      sendWelcomeEmail(user.email, user.name).catch(err => {
+        console.error('Email send failed (non-blocking):', err.message);
+      });
     } else if (!user.googleId) {
       // Update existing user with googleId if they don't have it
       user = await User.findByIdAndUpdate(
         user._id,
-        { googleId, picture },
+        { googleId, picture, role: role || user.role },
         { new: true }
       );
       console.log(`✅ User updated with Google OAuth: ${email}`);
@@ -256,6 +264,174 @@ exports.sendAnnouncement = async (req, res) => {
     });
   } catch (error) {
     console.error('Announcement Error:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Change user password
+// @route   POST /api/auth/change-password
+// @access  Private
+exports.changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Please provide current and new password' });
+    }
+
+    // Get user with password field
+    const user = await User.findById(req.user.id).select('+password');
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Check if current password matches
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    // Update password
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password changed successfully'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Forgot password - send reset email
+// @route   POST /api/auth/forgot-password
+// @access  Public
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Please provide email address' });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: 'No user found with that email' });
+    }
+
+    // Generate reset token (JWT with short expiry)
+    const resetToken = jwt.sign(
+      { id: user._id, type: 'password-reset' },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // Send reset email
+    try {
+      const resetLink = `${process.env.APP_URL || 'http://localhost:3000'}/reset-password/${resetToken}`;
+      await sendPasswordResetEmail(user.email, resetLink);
+    } catch (emailError) {
+      console.error('Email service error:', emailError.message);
+      return res.status(500).json({ error: 'Failed to send reset email' });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset email sent. Check your inbox.'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Reset password with token
+// @route   POST /api/auth/reset-password/:token
+// @access  Public
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { newPassword } = req.body;
+
+    if (!newPassword) {
+      return res.status(400).json({ error: 'Please provide new password' });
+    }
+
+    // Verify token
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({ error: 'Invalid or expired reset token' });
+    }
+
+    if (decoded.type !== 'password-reset') {
+      return res.status(401).json({ error: 'Invalid token type' });
+    }
+
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update password
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successfully. You can now login with your new password.'
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Delete user account
+// @route   DELETE /api/auth/account
+// @access  Private
+exports.deleteAccount = async (req, res) => {
+  try {
+    const { password } = req.body;
+
+    if (!password) {
+      return res.status(400).json({ error: 'Please provide password to confirm deletion' });
+    }
+
+    // Get user with password field
+    const user = await User.findById(req.user.id).select('+password');
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Verify password
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Password is incorrect' });
+    }
+
+    // Delete user account
+    await User.findByIdAndDelete(req.user.id);
+
+    res.status(200).json({
+      success: true,
+      message: 'Account deleted successfully'
+    });
+  } catch (error) {
     res.status(500).json({
       success: false,
       error: error.message

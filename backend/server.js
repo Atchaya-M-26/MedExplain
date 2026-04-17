@@ -44,6 +44,7 @@ app.use('/api/history', require('./routes/history'));
 app.use('/api/timeline', require('./routes/timeline'));
 app.use('/api/doctor', require('./routes/doctor'));
 app.use('/api/qr', require('./routes/qr'));
+app.use('/api/image-analysis', require('./routes/imageAnalysis'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Health check

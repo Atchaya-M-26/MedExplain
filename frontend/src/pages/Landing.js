@@ -92,7 +92,7 @@ const Landing = () => {
             <a href="#" style={{ color: 'var(--color-text-muted)', textDecoration: 'none', transition: 'color 0.3s' }} onMouseEnter={e => e.currentTarget.style.color = 'var(--color-accent)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}>Contact</a>
           </div>
         </div>
-        <p style={{ margin: 0 }}>&copy; 2024 MedExplain. All rights reserved.</p>
+        <p style={{ margin: 0 }}>&copy; 2025 MedExplain. All rights reserved.</p>
       </footer>
     </div>
   );

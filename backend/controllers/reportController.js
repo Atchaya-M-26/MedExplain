@@ -56,7 +56,7 @@ exports.uploadReport = async (req, res) => {
 // @access  Private
 exports.getReports = async (req, res) => {
   try {
-    const reports = await Report.find({ userId: req.user.id })
+    const reports = await Report.find({ userId: req.user.id, isDeleted: { $ne: true } })
       .sort({ uploadDate: -1 });
     
     res.status(200).json({
@@ -114,8 +114,103 @@ exports.deleteReport = async (req, res) => {
       return res.status(403).json({ error: 'Not authorized' });
     }
 
-    await Report.findByIdAndDelete(req.params.id);
+    // Soft delete - mark as deleted instead of removing
+    report.isDeleted = true;
+    report.deletedAt = new Date();
+    await report.save();
+    
     res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Get deleted reports
+// @route   GET /api/reports/deleted/history
+// @access  Private
+exports.getDeletedReports = async (req, res) => {
+  try {
+    const reports = await Report.find({ userId: req.user.id, isDeleted: true })
+      .sort({ deletedAt: -1 });
+    
+    res.status(200).json({
+      success: true,
+      count: reports.length,
+      data: reports
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Restore deleted report
+// @route   PATCH /api/reports/:id/restore
+// @access  Private
+exports.restoreReport = async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+    
+    if (!report) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+
+    if (report.userId.toString() !== req.user.id) {
+      return res.status(403).json({ error: 'Not authorized' });
+    }
+
+    // Restore by unmarking as deleted
+    report.isDeleted = false;
+    report.deletedAt = null;
+    await report.save();
+    
+    res.status(200).json({ success: true, data: report });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+};
+
+// @desc    Permanently delete report
+// @route   DELETE /api/reports/:id/permanent
+// @access  Private
+exports.permanentlyDeleteReport = async (req, res) => {
+  try {
+    const report = await Report.findById(req.params.id);
+    
+    if (!report) {
+      return res.status(404).json({ error: 'Report not found' });
+    }
+
+    if (report.userId.toString() !== req.user.id) {
+      return res.status(403).json({ error: 'Not authorized' });
+    }
+
+    // Delete the uploaded file if it exists
+    if (report.fileName) {
+      const path = require('path');
+      const fs = require('fs');
+      const filePath = path.join(__dirname, '../uploads', report.fileName);
+      try {
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+      } catch (fileError) {
+        console.error('Error deleting file:', fileError);
+      }
+    }
+
+    // Hard delete from database
+    await Report.findByIdAndDelete(req.params.id);
+    
+    res.status(200).json({ success: true, message: 'Report permanently deleted' });
   } catch (error) {
     res.status(500).json({
       success: false,

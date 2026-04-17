@@ -4,7 +4,7 @@ import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import { AuthContext } from '../context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
 
-const GoogleSignIn = () => {
+const GoogleSignIn = ({ role = 'patient' }) => {
   const navigate = useNavigate();
   const { googleLogin } = useContext(AuthContext);
   const [error, setError] = React.useState('');
@@ -15,10 +15,10 @@ const GoogleSignIn = () => {
       const decoded = jwtDecode(credentialResponse.credential);
       const { sub: googleId, email, name, picture } = decoded;
 
-      console.log('✅ Google Sign-In successful:', { googleId, email, name });
+      console.log('✅ Google Sign-In successful:', { googleId, email, name, role });
 
-      // Call backend to verify and create/update user
-      const response = await googleLogin(googleId, email, name, picture);
+      // Call backend to verify and create/update user with role
+      const response = await googleLogin(googleId, email, name, picture, role);
       
       if (response && response.token) {
         console.log('✅ Backend auth successful, redirecting to dashboard...');
@@ -34,24 +34,29 @@ const GoogleSignIn = () => {
 
   const handleError = (error) => {
     console.error('❌ Google Login Failed:', error);
-    setError('Google Sign-In failed. Please try again.');
+    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if (isLocalhost) {
+      setError('Google Sign-In requires localhost to be registered in Google Cloud Console. Use email/password instead.');
+    } else {
+      setError('Google Sign-In failed. Please try again.');
+    }
   };
 
   return (
-    <GoogleOAuthProvider clientId="747577344089-dhi77n3to30a8p8s15kl8l7f0it6c7mn.apps.googleusercontent.com">
-      <div style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>
-        {error && (
-          <div style={{ background: '#fde8e8', color: '#9b1c1c', border: '1px solid #f5c6cb', borderRadius: '8px', padding: '0.65rem 0.9rem', marginBottom: '1rem', fontSize: '0.875rem' }}>
-            {error}
-          </div>
-        )}
-        
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
-          <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }} />
-          <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Or continue with</span>
-          <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }} />
+    <div style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>
+      {error && (
+        <div style={{ background: '#fde8e8', color: '#9b1c1c', border: '1px solid #f5c6cb', borderRadius: '8px', padding: '0.65rem 0.9rem', marginBottom: '1rem', fontSize: '0.875rem' }}>
+          {error}
         </div>
-        
+      )}
+      
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+        <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }} />
+        <span style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Or continue with</span>
+        <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }} />
+      </div>
+      
+      <GoogleOAuthProvider clientId="747577344089-dhi77n3to30a8p8s15kl8l7f0it6c7mn.apps.googleusercontent.com">
         <GoogleLogin
           onSuccess={handleSuccess}
           onError={handleError}
@@ -59,8 +64,8 @@ const GoogleSignIn = () => {
           size="large"
           locale="en"
         />
-      </div>
-    </GoogleOAuthProvider>
+      </GoogleOAuthProvider>
+    </div>
   );
 };
 

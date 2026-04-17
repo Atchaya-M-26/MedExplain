@@ -56,7 +56,9 @@ const Header = () => {
               <>
                 <NavLink to="/dashboard" style={navLink}>Dashboard</NavLink>
                 <NavLink to="/timeline" style={navLink}>History</NavLink>
-                <NavLink to="/share" style={navLink}>Share</NavLink>
+                <NavLink to="/predict" style={navLink}>Predict</NavLink>
+                <NavLink to="/image-analysis" style={navLink}>Scan</NavLink>
+                <NavLink to="/profile" style={navLink}>Profile</NavLink>
               </>
             )}
             {userRole === 'doctor' && (

@@ -55,8 +55,8 @@ export const AuthProvider = ({ children }) => {
     return response.data;
   };
 
-  const googleLogin = async (googleId, email, name, picture) => {
-    const response = await authService.googleAuth(googleId, email, name, picture);
+  const googleLogin = async (googleId, email, name, picture, role = 'patient') => {
+    const response = await authService.googleAuth(googleId, email, name, picture, role);
     localStorage.setItem('token', response.data.token);
     setUser(response.data.user);
     setIsAuthenticated(true);

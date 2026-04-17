@@ -46,6 +46,16 @@ A full-stack healthcare application that allows users to upload medical reports,
 - ✅ Risk level assessment
 - ✅ AI chatbot for medical questions
 - ✅ Smart follow-up recommendations
+- ✅ ML-based disease prediction (Diabetes & Heart Disease)
+- ✅ Real-time risk assessment with confidence scores
+- ✅ Personalized health recommendations
+- ✅ Medical Image Analysis (X-rays, CT scans, MRI)
+  - ✅ Chest X-ray analysis with pneumonia detection
+  - ✅ CT scan analysis with lesion detection
+  - ✅ MRI image analysis for soft tissue abnormalities
+  - ✅ AI-powered classification with confidence scores
+  - ✅ Clinical findings and recommendations
+  - ✅ Analysis history tracking
 
 ## 🏗️ Project Structure
 
@@ -101,6 +111,7 @@ MedExplain/
 │   │   │   ├── DoctorPatientView.js
 │   │   │   ├── ReportDetail.js
 │   │   │   ├── QRShare.js
+│   │   │   ├── DiseasePrediction.js # ML disease prediction
 │   │   │   └── UploadReport.js
 │   │   ├── context/
 │   │   │   └── AuthContext.js    # Global auth with Google support
@@ -114,6 +125,18 @@ MedExplain/
 │   ├── public/index.html
 │   ├── package.json
 │   └── craco.config.js
+│
+├── ml/
+│   ├── main.py                  # FastAPI server for predictions
+│   ├── train_model.py           # ML model training script
+│   ├── models/                  # Trained models (generated)
+│   │   ├── diabetes_model.pkl
+│   │   ├── diabetes_scaler.pkl
+│   │   ├── heart_model.pkl
+│   │   └── heart_scaler.pkl
+│   ├── requirements.txt         # Python dependencies
+│   ├── START.bat / START.ps1    # Startup scripts
+│   └── README.md               # ML module documentation
 │
 ├── README.md
 └── .gitignore
@@ -143,11 +166,22 @@ MedExplain/
 - **i18next** - Multi-language support
 - **Recharts** - Data visualization
 
+### Machine Learning
+- **FastAPI** - Python web framework for ML API
+- **scikit-learn** - Machine learning algorithms
+- **Random Forest** - Classification model
+- **pandas** - Data processing
+- **numpy** - Numerical computing
+- **StandardScaler** - Feature scaling
+- **Uvicorn** - ASGI server
+
 ## 📋 Prerequisites
 
 - **Node.js** (v14+)
 - **npm** or **yarn**
 - **MongoDB** (local or cloud instance)
+- **Python** (v3.8+) - for ML module
+- **pip** - Python package manager
 
 ## 🚀 Installation & Setup
 
@@ -202,16 +236,52 @@ npm start
 
 **Frontend will run on:** http://localhost:3000
 
-## � User Journey
+### 4. **ML Module Setup** (Optional - for Disease Prediction)
+
+```bash
+cd ml
+
+# Create Python virtual environment
+python -m venv venv
+
+# Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+
+# On macOS/Linux:
+source venv/bin/activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Train ML models (first run only - takes ~1-2 minutes)
+python train_model.py
+
+# Start FastAPI server
+python main.py
+```
+
+**ML API will run on:** http://localhost:5001
+
+**Quick Start (Windows):**
+```powershell
+cd ml
+.\START.ps1
+```
+
+Or double-click `ml\START.bat`
+
+## 📊 User Journey
 
 ### Patient Flow
 1. **Landing Page** - Explore features and benefits
 2. **Registration** - Create account (with welcome email)
 3. **Dashboard** - Upload medical reports
 4. **Report Analysis** - View extracted data and insights
-5. **Timeline** - See complete medical history
-6. **Doctor Sharing** - Share reports via QR code
-7. **Chatbot** - Ask medical questions
+5. **Disease Prediction** - Get AI-powered health risk assessments
+6. **Timeline** - See complete medical history
+7. **Doctor Sharing** - Share reports via QR code
+8. **Chatbot** - Ask medical questions
 
 ### Doctor Flow
 1. **Doctor Login** - Access as healthcare provider

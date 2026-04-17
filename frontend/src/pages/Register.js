@@ -97,7 +97,7 @@ const Register = () => {
             </button>
           </form>
 
-          <GoogleSignIn />
+          <GoogleSignIn role={formData.role} />
 
           <p style={{ margin: '1.25rem 0 0', textAlign: 'center', fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>
             Already have an account?{' '}
