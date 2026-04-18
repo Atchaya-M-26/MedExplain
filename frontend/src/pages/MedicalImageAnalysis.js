@@ -267,7 +267,7 @@ const MedicalImageAnalysis = () => {
                 <div style={{ padding: '1rem', backgroundColor: '#f5f5f5', borderRadius: '8px' }}>
                   <small style={{ color: '#666', display: 'block', marginBottom: '0.25rem' }}>Confidence</small>
                   <h5 style={{ margin: 0, fontWeight: 700 }}>
-                    {result.confidence ? `${(result.confidence * 100).toFixed(1)}%` : 'N/A'}
+                    {result.confidence ? `${parseFloat(result.confidence).toFixed(1)}%` : 'N/A'}
                   </h5>
                 </div>
               </div>

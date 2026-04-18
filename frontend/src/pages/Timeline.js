@@ -185,7 +185,7 @@ const Timeline = () => {
                       </div>
                       
                       <div style={{ marginTop: '0.3rem', fontSize: '0.82rem', color: 'var(--color-text-muted)' }}>
-                        <strong>Confidence:</strong> {entry.confidence ? `${(entry.confidence * 100).toFixed(1)}%` : 'N/A'}
+                        <strong>Confidence:</strong> {entry.confidence ? `${parseFloat(entry.confidence).toFixed(1)}%` : 'N/A'}
                       </div>
 
                       {entry.findings && entry.findings.length > 0 && (

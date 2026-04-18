@@ -116,7 +116,7 @@ const History = () => {
                           {analysis.prediction}
                         </p>
                         <small style={{ color: '#6c757d' }}>
-                          Confidence: {analysis.confidence ? `${(analysis.confidence * 100).toFixed(1)}%` : 'N/A'}
+                          Confidence: {analysis.confidence ? `${parseFloat(analysis.confidence).toFixed(1)}%` : 'N/A'}
                         </small>
                       </div>
 

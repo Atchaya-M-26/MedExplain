@@ -136,7 +136,7 @@ const ScanAnalysisDetail = () => {
                   Confidence
                 </small>
                 <h5 style={{ marginBottom: 0 }}>
-                  {analysis.confidence ? `${(analysis.confidence * 100).toFixed(1)}%` : 'N/A'}
+                  {analysis.confidence ? `${parseFloat(analysis.confidence).toFixed(1)}%` : 'N/A'}
                 </h5>
               </Card.Body>
             </Card>

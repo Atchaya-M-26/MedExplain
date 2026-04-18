@@ -332,7 +332,7 @@ const DiseasePrediction = () => {
                   Model Confidence
                 </p>
                 <p style={{ fontSize: '1.8rem', fontWeight: 700, color: 'var(--color-accent)', margin: 0 }}>
-                  {(result.confidence * 100).toFixed(1)}%
+                  {parseFloat(result.confidence).toFixed(1)}%
                 </p>
               </div>
             </div>
