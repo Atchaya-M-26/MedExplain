@@ -169,7 +169,7 @@ const Timeline = () => {
                     <>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', flexWrap: 'wrap' }}>
                         <div style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--color-text)' }}>
-                          {entry.imageTypeName}
+                          Scan Report
                         </div>
                         <span style={{
                           fontSize: '0.68rem', fontWeight: 700, padding: '2px 8px', borderRadius: 20,

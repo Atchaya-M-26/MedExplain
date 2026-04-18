@@ -90,7 +90,7 @@ const History = () => {
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div>
                           <h6 style={{ marginBottom: '0.25rem', fontWeight: 'bold' }}>
-                            {imageTypes[analysis.imageType]?.name || analysis.imageType}
+                            Scan Report
                           </h6>
                           <small style={{ color: '#6c757d' }}>
                             {new Date(analysis.createdAt).toLocaleDateString(undefined, {
