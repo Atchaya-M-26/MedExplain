@@ -23,7 +23,15 @@ app = FastAPI(title="MedExplain ML API", version="1.0")
 # Enable CORS for frontend communication
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://localhost:5000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001", 
+        "http://localhost:5000",
+        "http://localhost:5001",
+        "https://med-explain-ten.vercel.app",
+        "https://med-explain-l55l3rv1x-atchaya-m-26s-projects.vercel.app",
+        "https://medexplain-3wzb.onrender.com"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
