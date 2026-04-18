@@ -54,21 +54,21 @@ const Register = () => {
           <form onSubmit={handleSubmit}>
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text)', marginBottom: '0.35rem' }}>Full Name</label>
-              <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Your full name" required style={inputStyle}
+              <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Your full name" required autocomplete="name" style={inputStyle}
                 onFocus={e => e.target.style.borderColor = 'var(--color-accent)'}
                 onBlur={e => e.target.style.borderColor = 'var(--color-border)'} />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text)', marginBottom: '0.35rem' }}>Email address</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required style={inputStyle}
+              <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required autocomplete="email" style={inputStyle}
                 onFocus={e => e.target.style.borderColor = 'var(--color-accent)'}
                 onBlur={e => e.target.style.borderColor = 'var(--color-border)'} />
             </div>
 
             <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, color: 'var(--color-text)', marginBottom: '0.35rem' }}>Password</label>
-              <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Min. 6 characters" required minLength={6} style={inputStyle}
+              <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Min. 6 characters" required minLength={6} autocomplete="new-password" style={inputStyle}
                 onFocus={e => e.target.style.borderColor = 'var(--color-accent)'}
                 onBlur={e => e.target.style.borderColor = 'var(--color-border)'} />
             </div>

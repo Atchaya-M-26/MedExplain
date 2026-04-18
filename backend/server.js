@@ -12,12 +12,23 @@ const app = express();
 // Middleware
 // CORS configuration for development and production
 const corsOptions = {
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:3002',
-    'https://med-explain-ten.vercel.app',
-    'https://modexplain-3wzb.onrender.com'
-  ],
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:3002',
+      'https://med-explain-ten.vercel.app',
+      'https://med-explain-l55l3rv1x-atchaya-m-26s-projects.vercel.app',
+      'https://medexplain-3wzb.onrender.com',
+      'https://modexplain-3wzb.onrender.com'
+    ];
+    
+    // Allow Vercel preview deployments (any .vercel.app domain)
+    if (!origin || allowedOrigins.includes(origin) || /\.vercel\.app$/.test(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']

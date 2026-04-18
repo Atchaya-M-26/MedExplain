@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 import { AuthContext } from '../context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
 
@@ -56,15 +56,13 @@ const GoogleSignIn = ({ role = 'patient' }) => {
         <div style={{ flex: 1, height: '1px', background: 'var(--color-border)' }} />
       </div>
       
-      <GoogleOAuthProvider clientId="747577344089-dhi77n3to30a8p8s15kl8l7f0it6c7mn.apps.googleusercontent.com">
-        <GoogleLogin
-          onSuccess={handleSuccess}
-          onError={handleError}
-          theme="outline"
-          size="large"
-          locale="en"
-        />
-      </GoogleOAuthProvider>
+      <GoogleLogin
+        onSuccess={handleSuccess}
+        onError={handleError}
+        theme="outline"
+        size="large"
+        locale="en"
+      />
     </div>
   );
 };
