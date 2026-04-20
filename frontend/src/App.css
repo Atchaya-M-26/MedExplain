@@ -1,0 +1,198 @@
+/* ============================================================
+   MedExplain – Enhanced Hospital-Grade Design System v2
+   ============================================================ */
+
+:root {
+  --color-bg:         #f0f4f8;
+  --color-surface:    #ffffff;
+  --color-surface-2:  #f8fafc;
+  --color-border:     #e2e8f0;
+  --color-border-lt:  #edf2f7;
+  --color-accent:     #2b7a8e;
+  --color-accent-dk:  #1e5f70;
+  --color-accent-lt:  #e0f2f7;
+  --color-accent-mid: #4a9db5;
+  --color-text:       #1a202c;
+  --color-text-muted: #64748b;
+  --color-text-light: #94a3b8;
+  --color-warning:    #b7791f;
+  --color-warning-lt: #fef3c7;
+  --color-success:    #276749;
+  --color-success-lt: #c6f6d5;
+  --color-danger:     #9b1c1c;
+  --color-danger-lt:  #fde8e8;
+  --font-family:      'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --radius-sm:        6px;
+  --radius-card:      14px;
+  --radius-lg:        20px;
+  --shadow-sm:        0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-card:      0 4px 16px rgba(0,0,0,0.07), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-lg:        0 10px 40px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.06);
+  --transition:       0.18s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Page animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+.page-enter { animation: fadeUp 0.25s ease forwards; }
+
+/* ── Cards ── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 1.5rem;
+  transition: box-shadow var(--transition), transform var(--transition);
+}
+.card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-1px);
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.35rem;
+  font-family: var(--font-family);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dk) 100%);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: all var(--transition);
+  box-shadow: 0 2px 8px rgba(43,122,142,0.3);
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--color-accent-mid) 0%, var(--color-accent) 100%);
+  box-shadow: 0 4px 16px rgba(43,122,142,0.4);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: translateY(0); box-shadow: none; }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.2rem;
+  font-family: var(--font-family);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition);
+}
+.btn-secondary:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: var(--color-accent-lt);
+}
+
+/* ── Badges ── */
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.badge-success { background: var(--color-success-lt); color: var(--color-success); }
+.badge-danger  { background: var(--color-danger-lt);  color: var(--color-danger); }
+.badge-warning { background: var(--color-warning-lt); color: var(--color-warning); }
+.badge-accent  { background: var(--color-accent-lt);  color: var(--color-accent); }
+
+/* ── Form inputs ── */
+.input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family);
+  font-size: 0.9rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+.input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(43,122,142,0.12);
+}
+
+/* ── Spinner ── */
+.spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* ── Utilities ── */
+.min-vh-100 { min-height: 100vh; }
+.text-muted  { color: var(--color-text-muted); }
+.text-accent { color: var(--color-accent); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.bg-surface  { background: var(--color-surface); }
+.bg-accent-lt { background: var(--color-accent-lt); }
+.rounded-card { border-radius: var(--radius-card); }
+.shadow-card  { box-shadow: var(--shadow-card); }
+.divider { border: none; border-top: 1px solid var(--color-border); margin: 1.25rem 0; }
+
+/* ── Page wrapper ── */
+.page {
+  min-height: 100vh;
+  background: var(--color-bg);
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Section heading ── */
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-light); }

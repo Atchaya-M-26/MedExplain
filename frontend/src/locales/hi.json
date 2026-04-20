@@ -1,0 +1,128 @@
+{
+  "common": {
+    "language": "भाषा",
+    "english": "अंग्रेजी",
+    "tamil": "तमिल",
+    "hindi": "हिंदी",
+    "logout": "लॉग आउट",
+    "welcome": "स्वागत है",
+    "loading": "लोड हो रहा है...",
+    "error": "त्रुटि",
+    "success": "सफलता"
+  },
+  "dashboard": {
+    "title": "चिकित्सा रिपोर्ट अपलोड करें",
+    "selectReport": "चिकित्सा रिपोर्ट चुनें",
+    "chooseFile": "फ़ाइल चुनें",
+    "noFileChosen": "कोई फ़ाइल नहीं चुनी गई",
+    "supports": "PDF, JPG, PNG, TIFF फ़ाइलों का समर्थन करता है",
+    "upload": "अपलोड करें",
+    "description": "हमारा AI स्वचालित रूप से आपकी रिपोर्ट पढ़ेगा और इसे सरल भाषा में सारांशित करेगा।",
+    "reportHistory": "रिपोर्ट इतिहास",
+    "delete": "हटाएं",
+    "failed": "विफल",
+    "noReports": "अभी तक कोई रिपोर्ट अपलोड नहीं की गई",
+    "uploadFile": "शुरू करने के लिए एक फ़ाइल अपलोड करें"
+  },
+  "reportViewer": {
+    "processing": "आपकी चिकित्सा रिपोर्ट को संसाधित किया जा रहा है... कृपया प्रतीक्षा करें।",
+    "failed": "रिपोर्ट को संसाधित करने में त्रुटि:",
+    "whatYourReportSays": "📋 आपकी रिपोर्ट कहती है (सरल भाषा में)",
+    "importantFindings": "⚠️ महत्वपूर्ण निष्कर्ष",
+    "testResultsExplained": "📊 आपके परीक्षण परिणाम समझाएं गए",
+    "yourValue": "आपका मान:",
+    "normalStatus": "✓ सामान्य",
+    "abnormalStatus": "⚠️ ध्यान देने की आवश्यकता",
+    "fullReportText": "पूरी रिपोर्ट पाठ"
+  },
+  "chatbot": {
+    "title": "चिकित्सा सहायक",
+    "placeholder": "अपने परिणामों के बारे में पूछें...",
+    "send": "भेजें",
+    "chat": "अपनी रिपोर्ट के बारे में अधिक जानकारी के लिए हमारे AI सहायक के साथ बात करें"
+  },
+  "analysis": {
+    "bloodPressure": "रक्त दबाव",
+    "bloodGlucose": "रक्त ग्लूकोज (चीनी स्तर)",
+    "hemoglobin": "हीमोग्लोबिन (ऑक्सीजन वहन करने वाला)",
+    "totalCholesterol": "कुल कोलेस्ट्रॉल",
+    "triglycerides": "ट्राइग्लिसराइड्स (रक्त वसा)",
+    "goodCholesterol": "अच्छा कोलेस्ट्रॉल (HDL)",
+    "badCholesterol": "बुरा कोलेस्ट्रॉल (LDL)",
+    "mmHg": "mmHg",
+    "mgDl": "mg/dL",
+    "gDl": "g/dL",
+    "percent": "%",
+    "normal": "सामान्य",
+    "slightlyHigh": "थोड़ा अधिक",
+    "borderlineHigh": "सीमांत अधिक",
+    "high": "अधिक",
+    "elevated": "ऊंचा",
+    "low": "कम",
+    "anemia": "एनीमिया का जोखिम",
+    "desirable": "वांछनीय",
+    "optimal": "इष्टतम",
+    "nearOptimal": "लगभग इष्टतम"
+  },
+  "explanations": {
+    "bloodPressure": "आपकी धमनी की दीवारों के विरुद्ध रक्त का दबाव। सामान्य 120/80 mmHg से कम है।",
+    "lowBloodSugar": "कम रक्त शर्करा - इसे बढ़ाने के लिए कुछ खाएं",
+    "normalBloodSugar": "सामान्य उपवास स्तर - अच्छा नियंत्रण",
+    "slightlyElevatedBloodSugar": "थोड़ा अधिक - अपने आहार की निगरानी करें",
+    "diabeticRangeBloodSugar": "मधुमेह सीमा - अपने डॉक्टर से परामर्श करें",
+    "lowHemoglobin": "कम (एनीमिया का जोखिम) - थकान का कारण हो सकता है",
+    "normalHemoglobin": "सामान्य - अच्छी ऑक्सीजन ले जाने की क्षमता",
+    "highHemoglobin": "अधिक - निर्जलीकरण संकेत कर सकता है",
+    "desirableCholesterol": "वांछनीय - अपनी स्वस्थ आदतें जारी रखें",
+    "borderlineHighCholesterol": "सीमांत उच्च - जीवनशैली परिवर्तन पर विचार करें",
+    "highCholesterol": "अधिक - उपचार के बारे में अपने डॉक्टर से सलाह लें",
+    "normalTriglycerides": "सामान्य - अच्छे वसा स्तर",
+    "elevatedTriglycerides": "ऊंचा - चीनी और वसा का सेवन कम करें",
+    "healthyHdl": "स्वस्थ स्तर - अच्छा सुरक्षात्मक कोलेस्ट्रॉल",
+    "lowHdl": "कम - व्यायाम बढ़ाएं",
+    "optimalLdl": "इष्टतम - उत्कृष्ट हृदय स्वास्थ्य",
+    "optimalNeighborhoodLdl": "लगभग इष्टतम - वर्तमान आदतें बनाए रखें",
+    "highLdl": "अधिक - उपचार के बारे में डॉक्टर से सलाह लें"
+  },
+  "auth": {
+    "email": "ईमेल",
+    "password": "पासवर्ड",
+    "name": "पूरा नाम",
+    "login": "लॉगिन",
+    "register": "पंजीकृत करें",
+    "noAccount": "खाता नहीं है?",
+    "alreadyHaveAccount": "पहले से खाता है?",
+    "loginHere": "यहां लॉगिन करें",
+    "registerHere": "यहां पंजीकृत करें"
+  },
+  "nav": {
+    "history": "इतिहास",
+    "share": "साझा करें",
+    "patientSearch": "रोगी खोज"
+  },
+  "timeline": {
+    "title": "इतिहास",
+    "empty": "अभी तक कोई इतिहास नहीं। अपनी टाइमलाइन बनाना शुरू करने के लिए पहली रिपोर्ट अपलोड करें।",
+    "viewReport": "रिपोर्ट देखें"
+  },
+  "reportDetail": {
+    "summary": "सारांश",
+    "details": "विवरण",
+    "notes": "नोट्स",
+    "condition": "स्थिति / निदान",
+    "medications": "दवाइयाँ",
+    "dosage": "खुराक",
+    "testResults": "परीक्षण परिणाम",
+    "insights": "अंतर्दृष्टि"
+  },
+  "qr": {
+    "title": "अपने डॉक्टर के साथ साझा करें",
+    "subtitle": "आपके डॉक्टर आपका चिकित्सा इतिहास देखने के लिए इसे स्कैन कर सकते हैं",
+    "copyLink": "लिंक कॉपी करें",
+    "copied": "कॉपी हो गया!"
+  },
+  "doctor": {
+    "searchTitle": "रोगी खोज",
+    "searchSubtitle": "रोगी का चिकित्सा इतिहास देखने के लिए रोगी ID दर्ज करें"
+  }
+}
