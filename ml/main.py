@@ -565,88 +565,121 @@ async def extract_medical_values(file: UploadFile = File(...)):
 def extract_numeric_values(text):
     """
     Extract medical values from OCR text
-    Matches common parameter names and their values
+    Handles multiple formats: inline (key: value) and table formats
     """
     values = {}
     text_lower = text.lower() if text else ""
     
     try:
-        # Diabetes parameters
-        glucose_match = re.search(r'glucose[:\s]+(\d+\.?\d*)', text_lower)
-        if glucose_match:
-            values['glucose'] = float(glucose_match.group(1))
+        # Helper function to safely extract and convert
+        def safe_extract(pattern, text_to_search):
+            match = re.search(pattern, text_to_search, re.IGNORECASE | re.MULTILINE | re.DOTALL)
+            if match and match.group(1):
+                try:
+                    return float(match.group(1).strip())
+                except (ValueError, TypeError):
+                    return None
+            return None
         
-        bmi_match = re.search(r'bmi[:\s]+(\d+\.?\d*)', text_lower)
-        if bmi_match:
-            values['bmi'] = float(bmi_match.group(1))
+        # Diabetes parameters - multiple pattern attempts for each parameter
         
-        age_match = re.search(r'age[:\s]+(\d+)', text_lower)
-        if age_match:
-            values['age'] = float(age_match.group(1))
+        # Glucose - handles "Glucose: 95", "Plasma Glucose\n95", "Glucose Level: 90 mg/dL"
+        glucose_val = safe_extract(r'(?:plasma\s+)?glucose[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if glucose_val is not None:
+            values['glucose'] = glucose_val
         
-        pregnancies_match = re.search(r'pregnancies[:\s]+(\d+)', text_lower)
-        if pregnancies_match:
-            values['pregnancies'] = float(pregnancies_match.group(1))
+        # BMI - handles "BMI: 22", "Body Mass Index\n22", "BMI 22 kg/m2", "BMI\n22.0"
+        # More flexible pattern for table format where value might be on next line
+        bmi_val = safe_extract(r'bmi[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if bmi_val is not None:
+            values['bmi'] = bmi_val
         
-        blood_pressure_match = re.search(r'blood pressure[:\s/]+(\d+)', text_lower)
-        if blood_pressure_match:
-            values['blood_pressure'] = float(blood_pressure_match.group(1))
+        # Age - handles "Age: 25", "Age\n25", "Age / Gender: 25 Years"
+        age_val = safe_extract(r'age[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if age_val is not None:
+            values['age'] = age_val
         
-        skin_thickness_match = re.search(r'skin thickness[:\s]+(\d+\.?\d*)', text_lower)
-        if skin_thickness_match:
-            values['skin_thickness'] = float(skin_thickness_match.group(1))
+        # Pregnancies - handles "Pregnancies: 1", "Pregnancies\n1", "Number of Pregnancies: 1"
+        preg_val = safe_extract(r'(?:number\s+of\s+)?pregnancies[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if preg_val is not None:
+            values['pregnancies'] = preg_val
         
-        insulin_match = re.search(r'insulin[:\s]+(\d+\.?\d*)', text_lower)
-        if insulin_match:
-            values['insulin'] = float(insulin_match.group(1))
+        # Blood Pressure / Diastolic BP - handles multiple formats
+        bp_val = safe_extract(r'(?:diastolic\s+)?blood\s+pressure[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if bp_val is None:
+            bp_val = safe_extract(r'(?:dbp|diastolic\s+bp)[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if bp_val is not None:
+            values['blood_pressure'] = bp_val
         
-        diabetes_pedigree_match = re.search(r'diabetes.pedigree|dpf[:\s]+(\d+\.?\d*)', text_lower)
-        if diabetes_pedigree_match:
-            values['diabetes_pedigree'] = float(diabetes_pedigree_match.group(1))
+        # Skin Thickness - handles "Skin Thickness: 20", "Skin Thickness (Triceps): 20", "Skin Thickness\n20", "Skin Thickness (Triceps)\n20"
+        # More flexible pattern for table format where value might be on next line after (Triceps)
+        skin_val = safe_extract(r'skin\s+thickness[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if skin_val is not None:
+            values['skin_thickness'] = skin_val
+        
+        # Insulin - handles "Insulin: 80", "Serum Insulin\n80", "Insulin Level: 80"
+        insulin_val = safe_extract(r'(?:serum\s+)?insulin[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if insulin_val is not None:
+            values['insulin'] = insulin_val
+        
+        # Diabetes Pedigree Function - handles "DPF: 0.2", "Diabetes Pedigree Function\n0.2", "Diabetes Pedigree Function: 0.2"
+        dpf_val = safe_extract(r'(?:diabetes\s+pedigree\s+function|dpf)[^0-9\n]*(?:\n\s*)?(\d+\.?\d*)', text_lower)
+        if dpf_val is not None:
+            values['diabetes_pedigree'] = dpf_val
         
         # Heart disease parameters  
-        cholesterol_match = re.search(r'cholesterol[:\s]+(\d+\.?\d*)', text_lower)
-        if cholesterol_match:
-            values['cholesterol'] = float(cholesterol_match.group(1))
         
-        resting_bp_match = re.search(r'resting.?bp|systolic[:\s]+(\d+)', text_lower)
-        if resting_bp_match:
-            values['resting_bp'] = float(resting_bp_match.group(1))
+        # Cholesterol - handles "Cholesterol: 210", "Total Cholesterol\n210"
+        chol_val = safe_extract(r'(?:total\s+)?cholesterol[:\s\n]+(\d+\.?\d*)', text_lower)
+        if chol_val is not None:
+            values['cholesterol'] = chol_val
         
-        heart_rate_match = re.search(r'heart.rate|hr[:\s]+(\d+\.?\d*)', text_lower)
-        if heart_rate_match:
-            values['max_heart_rate'] = float(heart_rate_match.group(1))
+        # Resting BP / Systolic - handles "Resting BP: 130", "Systolic\n130"
+        rbp_val = safe_extract(r'(?:resting\s+)?(?:blood\s+pressure|systolic|sbp)[:\s\n]+(\d+\.?\d*)', text_lower)
+        if rbp_val is not None:
+            values['resting_bp'] = rbp_val
         
-        fasting_blood_match = re.search(r'fasting.blood|fbs[:\s]+(\d+)', text_lower)
-        if fasting_blood_match:
-            values['fasting_blood'] = float(fasting_blood_match.group(1))
+        # Heart Rate - handles "Max Heart Rate: 180", "Heart Rate\n180"
+        hr_val = safe_extract(r'(?:max(?:imum)?\s+)?heart\s+rate[:\s\n]+(\d+\.?\d*)', text_lower)
+        if hr_val is not None:
+            values['max_heart_rate'] = hr_val
         
-        sex_match = re.search(r'sex[:\s]+(m|f|male|female|1|0)', text_lower)
-        if sex_match:
-            sex_val = sex_match.group(1).lower()
+        # Fasting Blood Sugar/Glucose - handles "Fasting Blood Sugar: 110", "FBS\n110"
+        fbs_val = safe_extract(r'(?:fasting\s+)?(?:blood\s+(?:sugar|glucose)|fbs)[:\s\n]+(\d+\.?\d*)', text_lower)
+        if fbs_val is not None:
+            values['fasting_blood'] = fbs_val
+        
+        # Sex - handles "Sex: M", "Sex: Female", "Sex: 1"
+        sex_match = re.search(r'sex[:\s\n]+(m|f|male|female|1|0)', text_lower, re.IGNORECASE)
+        if sex_match and sex_match.group(1):
+            sex_val = sex_match.group(1).lower().strip()
             values['sex'] = 1.0 if sex_val in ['m', 'male', '1'] else 0.0
         
-        chest_pain_match = re.search(r'chest.pain[:\s]+(\d)', text_lower)
-        if chest_pain_match:
-            values['chest_pain'] = float(chest_pain_match.group(1))
+        # Chest Pain - handles "Chest Pain: 2", "Chest Pain Type\n2"
+        cp_val = safe_extract(r'chest\s+pain[:\s\n]+(\d+\.?\d*)', text_lower)
+        if cp_val is not None:
+            values['chest_pain'] = cp_val
         
-        resting_ecg_match = re.search(r'resting.ecg|rest.?ecg[:\s]+(\d)', text_lower)
-        if resting_ecg_match:
-            values['resting_ecg'] = float(resting_ecg_match.group(1))
+        # Resting ECG - handles "Resting ECG: 1", "Rest ECG\n1"
+        ecg_val = safe_extract(r'resting\s+(?:ecg|ekg)[:\s\n]+(\d+\.?\d*)', text_lower)
+        if ecg_val is not None:
+            values['resting_ecg'] = ecg_val
         
-        exercise_match = re.search(r'exercise.induced|ex.?angina[:\s]+(yes|no|1|0)', text_lower)
-        if exercise_match:
-            ex_val = exercise_match.group(1).lower()
+        # Exercise Induced Angina - handles "Exercise Induced: Yes", "Exercise Angina: 1"
+        ex_match = re.search(r'exercise\s+induced\s+(?:angina|angina\s+pectoris|angina)?[:\s\n]*(yes|no|1|0)', text_lower, re.IGNORECASE)
+        if ex_match and ex_match.group(1):
+            ex_val = ex_match.group(1).lower().strip()
             values['exercise_induced'] = 1.0 if ex_val in ['yes', '1'] else 0.0
         
-        old_peak_match = re.search(r'old.peak|st.depression[:\s]+(\d+\.?\d*)', text_lower)
-        if old_peak_match:
-            values['old_peak'] = float(old_peak_match.group(1))
+        # Old Peak (ST depression) - handles "ST Depression: 2.5", "Old Peak\n2.5"
+        op_val = safe_extract(r'(?:st\s+)?depression[:\s\n]+(\d+\.?\d*)', text_lower)
+        if op_val is not None:
+            values['old_peak'] = op_val
     
     except Exception as e:
         print(f"⚠️  Error during value extraction: {e}")
     
-    # Return all extracted values (None values will be passed as None)
+    # Return all extracted values
     return values
 
 
